@@ -4,6 +4,13 @@ let previousDirection = null; // Variable to store the previous direction
 let timer = document.getElementById("timerLengthInput");
 let drillMode = document.getElementById("drillModeSelect");
 
+// Define audio elements for each sound
+const sounds = {
+    1: new Audio('../assets/countdown.wav'),
+    2: new Audio('../short-whistle.wav'),
+    3: new Audio('../finish-whistle.wav'),
+  };
+
 function calculateDirection() {
     let newDirection;
     const directionIndex = Math.floor(Math.random() * 3); // Randomly choose 0, 1, or 2
@@ -41,6 +48,32 @@ function getNextSpot() {
     return { position: previousPosition, direction: newDirection };
   }
 
+function playSound(key, callback) {
+    stopAllSounds(); // Stop any currently playing sounds
+    if (sounds[key]) {
+        sounds[key].play();
+        sounds[key].onended = function() {
+            if (callback) {
+                callback();
+            }
+        };
+    } else {
+        console.error(`Sound with key ${key} not found.`);
+        if (callback) {
+            callback();
+        }
+    }
+}
+
 function runDrill(){
-    
+    playSound(1); //play countdown
+    playSound(2); //play starting whistle
+    const intervalId = setInterval(getNextSpot, timer);
+
+    // Stop the interval after the duration has passed
+    setTimeout(() => {
+        clearInterval(intervalId);
+        console.log("Timer finished.");
+        playSound(3);
+    }, duration);
 }
