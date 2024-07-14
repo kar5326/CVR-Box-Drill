@@ -1,7 +1,8 @@
 let previousPosition = null; // Variable to store the previous position
 let previousDirection = null; // Variable to store the previous direction
 
-let timer = document.getElementById("timerLengthInput");
+let drillDuration = document.getElementById("timerLengthInput") * 60000; //convert into ms
+let instructionTime = document.getElementById("spaceLengthInput") * 1000;
 let drillMode = document.getElementById("drillModeSelect");
 
 // Define audio elements for each sound
@@ -100,12 +101,12 @@ function playSound(key, callback) {
 function runDrill(){
     playSound(7); //play countdown
     playSound(8); //play starting whistle
-    const intervalId = setInterval(getNextSpot, timer);
+    const intervalId = setInterval(getNextSpot, instructionTime);
 
     // Stop the interval after the duration has passed
     setTimeout(() => {
         clearInterval(intervalId);
         console.log("Timer finished.");
         playSound(9); //play finish whistle
-    }, duration);
+    }, drillDuration);
 }
