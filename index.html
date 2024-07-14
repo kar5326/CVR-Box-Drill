@@ -4,34 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Time for Box Drill!</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    text-align: left;
-    margin: 20px;
-  }
-  .container {
-    margin-top: 20px;
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h2>Time for Box Drill!</h2>
-  <label for="drillModeSelect">Select Mode:</label>
-  <select id="drillModeSelect">
-    <option selected="selected" value="box">10x10 Box</option>
-    <option value="fullTrack">Full Track</option>
-  </select>
-</br>
-  <label for="timerLengthInput">Timer Length (minutes):</label>
-  <input type="number" id="timerLengthInput" min=1>
-</br>
-  <label for="spaceLengthInput">Space between instructions (seconds):</label>
-  <input type="number" id="spaceLengthInput" min=1>
-</br>
-  <button id="startButton" onclick="runDrill()">Start</button>
+  <div class="title">
+    <h2>Time for Box Drill!</h2>
+  </div>
 
-  <button id="stopButton" onclick="stopExecution()">Stop</button>
+  <div class="content">
+    <p>
+      <label for="drillModeSelect" class="spaced">Select Mode:</label>
+      <select id="drillModeSelect" class="spaced">
+        <option selected="selected" value="box">10x10 Box</option>
+        <option value="fullTrack">Full Track</option>
+      </select>
+    </p>
+    
+    <p>
+      <label for="timerLengthInput">Timer Length (minutes):</label>
+      <input type="number" id="timerLengthInput" min=1>
+    </p>
+
+    <p>
+      <label for="spaceLengthInput">Space between instructions (seconds):</label>
+      <input type="number" id="spaceLengthInput" min=1>
+    </p>
+
+    <button id="startButton" onclick="runDrill()">Start</button>
+    <button id="stopButton" onclick="stopExecution()">Stop</button>
+  </div>
 
   <script src="boxDrill.js"></script>
 </body>

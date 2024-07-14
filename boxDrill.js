@@ -1,6 +1,5 @@
 let previousPosition = null; // Variable to store the previous position
 let previousDirection = null; // Variable to store the previous direction
-let currentState = BACK; //track current box position to make sure its staying in-bounds
 let startButton = document.getElementById("startButton");
 let drillDuration;
 let instructionTime;
@@ -10,6 +9,8 @@ let timeoutId; // Variable to store the timeout ID
 
 var FRONT = "front"
 var BACK = "back"
+let currentState = BACK; //track current box position to make sure its staying in-bounds
+
 
 // Define audio elements for each sound
 const sounds = {
