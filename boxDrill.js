@@ -1,8 +1,12 @@
 let previousPosition = null; // Variable to store the previous position
 let previousDirection = null; // Variable to store the previous direction
+let currentState = BACK; //track current box position to make sure its staying in-bounds
+let startButton = document.getElementById("startButton");
 let drillDuration;
 let instructionTime;
 let drillMode;
+let intervalId; // Variable to store the interval ID
+let timeoutId; // Variable to store the timeout ID
 
 var FRONT = "front"
 var BACK = "back"
@@ -40,21 +44,18 @@ function calculateDirection() {
 
 function getNextSpot() {
     let newPosition; // Generate random number between 1 and 4
-    let newDirection;// Generate random direction "forward" or "backwards"
-    let currentState = BACK; //track curr box dir to make sure I stay in bounds
+    let newDirection; // Generate random direction "forward" or "backwards"
 
     do {
         newPosition = Math.floor(Math.random() * 4) + 1;
         if(drillMode == "10x10 Box"){
             do {
-                // newDirection = calculateDirection() 
                 console.log("Current State: ", currentState)
                 if(currentState === BACK){
                     do {
                         newDirection = calculateDirection()
-                    } while (newDirection === BACK)
+                    } while (newDirection === BACK) //too many loops :(
                     if(newDirection === FRONT){
-                        console.log("update state to front")
                         currentState = FRONT //update state
                     } 
                 } else if (currentState === FRONT){
@@ -62,7 +63,6 @@ function getNextSpot() {
                         newDirection = calculateDirection()
                     } while (newDirection === FRONT) //TODO awful time complexity, need to fix
                     if(newDirection === BACK){
-                        console.log("update state to back")
                         currentState = BACK
                     }
                 }
@@ -134,26 +134,34 @@ async function playSoundsSequentially(newDirection, newPosition) {
     }
 }
 
-function runDrill(){
+async function runDrill(){
     drillDuration = document.getElementById("timerLengthInput").value * 60000; //convert into ms
     instructionTime = document.getElementById("spaceLengthInput").value * 1000;
     modeSelect = document.getElementById("drillModeSelect");
     drillMode = modeSelect.options[modeSelect.selectedIndex].text;
+    startButton.disabled = true;
 
     console.log(drillDuration);
     console.log(instructionTime);
     console.log(drillMode);
     console.log("Running drill...")
-    playSound(7) //play countdown, then starting whistle
-
-    // Start the interval
-    const intervalId = setInterval(getNextSpot, instructionTime);
+    await playSound(8); //play starting whistle
+    
+    intervalId = setInterval(getNextSpot, instructionTime);// Start the interval
 
     // Stop the interval after the duration has passed
-    setTimeout(() => {
+    timeoutId = setTimeout(() => {
         clearInterval(intervalId);
         console.log("Timer finished.");
         playSound(9) //play finish whistle sound
-    }, 12000);
-    
+        startButton.disabled = false;
+    }, drillDuration);
+}
+
+function stopExecution(){
+    clearInterval(intervalId);
+    clearTimeout(timeoutId);
+    console.log("Execution stopped.");
+    playSound(9);
+    startButton.disabled = false;
 }
