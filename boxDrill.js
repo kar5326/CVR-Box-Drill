@@ -161,7 +161,7 @@ async function runDrill(){
         playSound(9) //play finish whistle sound
         currentState = BACK; //reset state
         startButton.disabled = false;
-    }, 15000);
+    }, drillDuration);
 }
 
 function stopExecution(){
