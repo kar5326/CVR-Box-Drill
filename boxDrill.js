@@ -104,10 +104,12 @@ async function playSoundsSequentially(newDirection, newPosition) {
         // Play sound based on newDirection
         switch (newDirection) {
             case "front":
-                await playSound(5);
+                x = playSound(5); // Not the most elegant but fixes timing
+                await new Promise(x=> setTimeout(x, 500))
                 break;
             case "back":
-                await playSound(6);
+                x = playSound(6);
+                await new Promise(x=> setTimeout(x, 500))
                 break;
             default:
                 break; // No sound if "stationary"
@@ -116,16 +118,16 @@ async function playSoundsSequentially(newDirection, newPosition) {
         // Play sound based on newPosition
         switch (newPosition) {
             case 1:
-                await playSound(1);
+                 playSound(1);
                 break;
             case 2:
-                await playSound(2);
+                 playSound(2);
                 break;
             case 3:
-                await playSound(3);
+                 playSound(3);
                 break;
             case 4:
-                await playSound(4);
+                 playSound(4);
                 break;
             default:
                 break;
@@ -146,7 +148,9 @@ async function runDrill(){
     console.log(instructionTime);
     console.log(drillMode);
     console.log("Running drill...")
-    await playSound(8); //play starting whistle
+    // await playSound(8); //play starting whistle
+    x = playSound(8);
+    await new Promise(x=> setTimeout(x, 500))
     
     intervalId = setInterval(getNextSpot, instructionTime);// Start the interval
 
@@ -155,8 +159,9 @@ async function runDrill(){
         clearInterval(intervalId);
         console.log("Timer finished.");
         playSound(9) //play finish whistle sound
+        currentState = BACK; //reset state
         startButton.disabled = false;
-    }, drillDuration);
+    }, 15000);
 }
 
 function stopExecution(){
@@ -164,5 +169,7 @@ function stopExecution(){
     clearTimeout(timeoutId);
     console.log("Execution stopped.");
     playSound(9);
+    currentState = BACK;
+    console.log("State reset to back")
     startButton.disabled = false;
 }
