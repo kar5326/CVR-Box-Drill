@@ -135,16 +135,16 @@ async function playSoundsSequentially(newDirection, newPosition) {
         // Play sound based on newPosition
         switch (newPosition) {
             case 1:
-                playSound(1);
+                await playSound(1);
                 break;
             case 2:
-                playSound(2);
+                await playSound(2);
                 break;
             case 3:
-                playSound(3);
+                await playSound(3);
                 break;
             case 4:
-                playSound(4);
+                await playSound(4);
                 break;
             default:
                 break;
