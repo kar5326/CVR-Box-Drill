@@ -28,6 +28,7 @@ const sounds = {
 // Preload the audio files
 Object.values(sounds).forEach(sound => {
     sound.preload = 'auto';
+    sound.load(); // explicitly load files to fix mobile play issues
 });
 
 function calculateDirection() {
@@ -90,9 +91,25 @@ function getNextSpot() {
 
   function playSound(key) {
     return new Promise((resolve, reject) => {
+        // if (sounds[key]) {
+        //     sounds[key].play();
+        //     sounds[key].onended = resolve; // Resolve the promise when sound ends
+        // } else {
+        //     reject(`Sound with key ${key} not found.`);
+        //     resolve(); // Resolve the promise even if sound fails to play
+        // }
         if (sounds[key]) {
-            sounds[key].play();
-            sounds[key].onended = resolve; // Resolve the promise when sound ends
+            let playPromise = sounds[key].play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    sounds[key].onended = resolve;
+                }).catch((error) => {
+                    console.error("Sound play failed:", error);
+                    resolve(); 
+                });
+            } else {
+                resolve();
+            }
         } else {
             reject(`Sound with key ${key} not found.`);
         }
@@ -118,16 +135,16 @@ async function playSoundsSequentially(newDirection, newPosition) {
         // Play sound based on newPosition
         switch (newPosition) {
             case 1:
-                 playSound(1);
+                playSound(1);
                 break;
             case 2:
-                 playSound(2);
+                playSound(2);
                 break;
             case 3:
-                 playSound(3);
+                playSound(3);
                 break;
             case 4:
-                 playSound(4);
+                playSound(4);
                 break;
             default:
                 break;
