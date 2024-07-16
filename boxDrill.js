@@ -135,16 +135,16 @@ async function playSoundsSequentially(newDirection, newPosition) {
         // Play sound based on newPosition
         switch (newPosition) {
             case 1:
-                await playSound(1);
+                playSound(1);
                 break;
             case 2:
-                await playSound(2);
+                playSound(2);
                 break;
             case 3:
-                await playSound(3);
+                playSound(3);
                 break;
             case 4:
-                await playSound(4);
+                playSound(4);
                 break;
             default:
                 break;
@@ -165,9 +165,11 @@ async function runDrill(){
     console.log(instructionTime);
     console.log(drillMode);
     console.log("Running drill...")
-    // await playSound(8); //play starting whistle
+
     x = playSound(8);
-    await new Promise(x=> setTimeout(x, 500))
+    await new Promise(x=> setTimeout(x, 5000));
+
+    getNextSpot();
     
     intervalId = setInterval(getNextSpot, instructionTime);// Start the interval
 
