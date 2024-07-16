@@ -20,9 +20,8 @@ const sounds = {
     4: new Audio('assets/four.wav'),
     5: new Audio('assets/front.wav'),
     6: new Audio('assets/back.wav'),
-    7: new Audio('assets/countdown.wav'),
-    8: new Audio('assets/short-whistle.wav'),
-    9: new Audio('assets/finish-whistle.wav'),
+    7: new Audio('assets/short-whistle.wav'),
+    8: new Audio('assets/finish-whistle.wav'),
   };
 
 // Preload the audio files
@@ -91,27 +90,12 @@ function getNextSpot() {
 
   function playSound(key) {
     return new Promise((resolve, reject) => {
-        // if (sounds[key]) {
-        //     sounds[key].play();
-        //     sounds[key].onended = resolve; // Resolve the promise when sound ends
-        // } else {
-        //     reject(`Sound with key ${key} not found.`);
-        //     resolve(); // Resolve the promise even if sound fails to play
-        // }
         if (sounds[key]) {
-            let playPromise = sounds[key].play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    sounds[key].onended = resolve;
-                }).catch((error) => {
-                    console.error("Sound play failed:", error);
-                    resolve(); 
-                });
-            } else {
-                resolve();
-            }
+            sounds[key].play();
+            sounds[key].onended = resolve; // Resolve the promise when sound ends
         } else {
             reject(`Sound with key ${key} not found.`);
+            resolve(); // Resolve the promise even if sound fails to play
         }
     });
 }
@@ -166,8 +150,8 @@ async function runDrill(){
     console.log(drillMode);
     console.log("Running drill...")
 
-    x = playSound(8);
-    await new Promise(x=> setTimeout(x, 5000));
+    x = playSound(7);
+    await new Promise(x=> setTimeout(x, 500));
 
     getNextSpot();
     
@@ -177,7 +161,7 @@ async function runDrill(){
     timeoutId = setTimeout(() => {
         clearInterval(intervalId);
         console.log("Timer finished.");
-        playSound(9) //play finish whistle sound
+        playSound(8) //play finish whistle sound
         currentState = BACK; //reset state
         startButton.disabled = false;
     }, drillDuration);
@@ -187,7 +171,7 @@ function stopExecution(){
     clearInterval(intervalId);
     clearTimeout(timeoutId);
     console.log("Execution stopped.");
-    playSound(9);
+    playSound(8);
     currentState = BACK;
     console.log("State reset to back")
     startButton.disabled = false;
